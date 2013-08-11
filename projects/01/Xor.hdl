@@ -7,10 +7,23 @@
  *  Exclusive-or gate: out = !(a == b).
  */
 
+/**
+* a b    f
+* 0 0 => 0
+* 0 1 => 1
+* 1 0 => 1
+* 1 1 => 0
+* f(a,b)=¬a*b+a*¬b
+*/
+
 CHIP Xor {
     IN a, b;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Not(in=a, out=nota);
+    And(a=nota, b=b, out=x);
+    Not(in=b, out=notb);
+    And(a=a, b=notb, out=y);
+    Or(a=x, b=y, out=out);
 }

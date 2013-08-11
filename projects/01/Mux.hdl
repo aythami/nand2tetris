@@ -7,10 +7,41 @@
  * Multiplexor. If sel==1 then out=b else out=a.
  */
 
+/*
+* a b sel out
+* x x  0   a
+* x x  1   b
+*/
+
+/*
+* a b sel out
+* 0 0  0   0
+* 0 0  1   0
+* 0 1  0   0
+* 0 1  1   1
+* 1 0  0   1
+* 1 0  1   0
+* 1 1  0   1
+* 1 1  1   1
+* f(a, b, sel) = ¬a*b*sel + a*¬b*¬sel + a*b*¬sel + a*b*sel 
+*/
+
+/*
+* Karnauth Map
+*     ab 00 01 11 10
+*  sel  ------------
+*    0 |        1  1
+*    1 |     1  1
+* f(a, b, sel) = a*¬sel + b*sel
+*/
+
 CHIP Mux {
     IN a, b, sel;
     OUT out;
 
     PARTS:
-    // Put your code here:
+    Not(in=sel, out=notSel);
+    And(a=a, b=notSel, out=one);
+    And(a=b, b=sel, out=two);
+    Or(a=one, b=two, out=out);
 }
